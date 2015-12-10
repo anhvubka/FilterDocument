@@ -20,22 +20,26 @@ public class FilterWords {
 		s = s.replace("\\s+", "[\\W]*");
 		return s + "\\W";
 	}
-	public static boolean isRemoved(StringBuilder content, Iterable<String> keywordList, int threshold) {
-		HashSet<String> patternSet = new HashSet<String>();
+	public static int isRemoved(StringBuilder content, ArrayList<String> keywordList, int threshold) {
+		ArrayList<String> patternSet = new ArrayList<String>();
 		for(String keyword:keywordList) {
 			patternSet.add(createPatternFromString(keyword));
 		}
-		int[] count = new int[patternSet.size()];
-		int id = 0;
-		for(String pattern: patternSet) {
-			count[id] = countAppearance(content, pattern);
-//			System.out.println(content);
-			id++;
+		int numWords = patternSet.size();
+		int[] count = new int[numWords];
+		int maxCount = threshold;
+		int maxIndex = -1;
+		for(int i = 0; i < numWords; i++) {
+			count[i] = countAppearance(content, patternSet.get(i));
+			//			System.out.println(content);
 		}
-		for (int c: count) {
-			if (c > threshold) return true;
+		for (int i = 0; i < numWords; i++) {
+			if (count[i] > maxCount){
+				maxCount = count[i];
+				maxIndex = i;
+			}	
 		}
-		return false;
+		return maxIndex;
 	}
 	private static int countAppearance(StringBuilder content, String pattern) {
 		Pattern regex =  Pattern.compile(pattern, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
@@ -63,13 +67,13 @@ public class FilterWords {
 				System.out.println(s);
 				listKeyword.add(s);
 			}
-			
+
 		}
 		reader.close();
 		return listKeyword;
 	}
 	public static void main(String[] args) throws IOException{
 		ArrayList<String> listFilter = readWordList(FILE_NAME);
-		
+
 	}
 }

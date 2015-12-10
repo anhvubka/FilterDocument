@@ -79,11 +79,11 @@ public class ContentMatching {
 			Pattern mainPttr = pttrEntry.getValue();
 			cn.processAllDocFromKeyword(keywordID, resultString -> {
 				StringBuilder resultBuilder = new StringBuilder(resultString);
-				boolean isRemoved = FilterWords.isRemoved(resultBuilder, filterWords, 3);
-				if (isRemoved){
+				int maxIndex = FilterWords.isRemoved(resultBuilder, filterWords, 3);
+				if (maxIndex >= 0){
 					try {
 						//System.out.println(resultString);
-						HtmlUtil.writeHTML(keywords.get(keywordID) + ".html",
+						HtmlUtil.writeHTML(keywords.get(keywordID) + "-" + filterWords.get(maxIndex) + ".html",
 								Arrays.asList(resultBuilder.toString().split("[!?]|(\\. )")));
 						
 					} catch (Exception e) {
