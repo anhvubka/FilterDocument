@@ -1,3 +1,2 @@
 giá vàng
-\d{2,}\W\d+\W*[^a-zA-Z0-9\s=]\W*\d{2,}\W\d+
 sjc
