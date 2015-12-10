@@ -80,16 +80,19 @@ public class ContentMatching {
 			cn.processAllDocFromKeyword(keywordID, resultString -> {
 				StringBuilder resultBuilder = new StringBuilder(resultString);
 				int maxIndex = FilterWords.isRemoved(resultBuilder, filterWords, 3);
-				if (maxIndex >= 0){
-					try {
-						//System.out.println(resultString);
+				try {
+					//System.out.println(resultString);
+					if (maxIndex >= 0){
 						HtmlUtil.writeHTML(keywords.get(keywordID) + "-" + filterWords.get(maxIndex) + ".html",
 								Arrays.asList(resultBuilder.toString().split("[!?]|(\\. )")));
-						
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					} else {
+						HtmlUtil.writeHTML(keywords.get(keywordID) + " not match" + ".html",
+								Arrays.asList(resultBuilder.toString().split("[!?]|(\\. )")));
 					}
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			});
 		}
